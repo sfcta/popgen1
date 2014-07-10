@@ -292,6 +292,7 @@ class PopgenManager(object):
 	    dbc.execute(query.query2)
 	except Exception, e:
 	    print '\tError occurred when populating the table: %s' %e
+        # print query.query2
 	dbc.close()
 	db.commit()
 
@@ -332,6 +333,9 @@ class PopgenManager(object):
 		print 'NO PERSON AND NO GQ'
                 prepare_data_nogqs_noper(db, scenario, state=state)
         except KeyError, e:
+            print '\tError occurred: %s' %e
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            traceback.print_tb(exc_traceback)
             print ("""Check the <b>hhid, serialno</b> columns in the """\
                    """data. If you wish not to synthesize groupquarters, make"""\
                    """ sure that you delete all person records corresponding """\
@@ -681,9 +685,18 @@ class PopgenManager(object):
                              db = '%s%s%s' %(scenario.name, 'scenario', scenario.scenario), local_infile=1)
         dbc = db.cursor()
 
-        dbc.execute("""select * from index_matrix_%s""" %(99999))
-        indexMatrix = asarray(dbc.fetchall())
-
+        try:
+            dbc.execute("""select * from index_matrix_%s""" %(99999))
+        except Exception, e:
+            print '\tError occurred: %s' %e
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            traceback.print_tb(exc_traceback)
+            
+        try:
+            indexMatrix = asarray(dbc.fetchall())
+        except Exception, e:
+            print '\tError occurred: %s' %e
+            
         f = open('%s%s%s%sindexMatrix_99999.pkl' %(self.project.location, os.path.sep,
 						   self.project.name, os.path.sep), 'wb')
         pickle.dump(indexMatrix, f)
@@ -718,7 +731,8 @@ class PopgenManager(object):
                                        """ and tract = %s and bg = %s  """ %(dbName, stateFilterStr, geo.county,
 									     geo.tract, geo.bg))
 	    except Exception, e:
-	        print '\tError occurred when deleting housing records: %s' %e
+            # print '\tError occurred when deleting housing records: %s' %e
+              pass
 
 
 	    try:
@@ -726,7 +740,8 @@ class PopgenManager(object):
                                        """ and tract = %s and bg = %s  """ %(dbName, geo.state, geo.county,
 									     geo.tract, geo.bg))
 	    except Exception, e:
-	        print '\tError occurred when deleting person records: %s' %e
+	        # print '\tError occurred when deleting person records: %s' %e
+              pass
 
         dbc.close()
         db.close()
@@ -883,6 +898,8 @@ class PopgenManager(object):
             varCorrDict.update(self.variable_control_corr_dict(scenario.selVariableDicts.gq))
         varCorrDict.update(self.variable_control_corr_dict(scenario.selVariableDicts.person))
 
+        print 'Total number of geographies', len(scenario.synthesizeGeoIds)
+
 	for geo in scenario.synthesizeGeoIds:
 	    #print ("Running Syntheiss for geography State - %s, County - %s, Tract - %s, BG - %s"
             #       %(geo.state, geo.county, geo.tract, geo.bg))
@@ -963,22 +980,27 @@ class PopgenManager(object):
 	
 
 
-    def run_scenarios(self):
+    def run_scenarios(self, export_results_only):
         skipFlag = self.configParser.parse_skip()
         
         if skipFlag:
             print 'Skipping PopGen run ---'
             return
 
-	self.configParser.parse_scenarios()
-	self.scenarioList = self.configParser.scenarioList
+    	self.configParser.parse_scenarios()
+        self.scenarioList = self.configParser.scenarioList
         self.stateList = self.configParser.stateList
 
-        self.drop_scenario_database()        
-	for scenario in self.scenarioList:
+        if export_results_only:
+            for scenario in self.scenarioList:
+                self.export_results(scenario)
+            return
+            
+        self.drop_scenario_database()
+        for scenario in self.scenarioList:
             if len(self.stateList) > 1:
                 print 'Synthesis for multiple states is required'
-	    self.gqAnalyzed = self.is_gq_analyzed(scenario)        
+            self.gqAnalyzed = self.is_gq_analyzed(scenario)        
             
             for state in self.stateList:
                 print '\t\tGeoIds for state - ', state
@@ -1000,8 +1022,8 @@ class PopgenManager(object):
                 self.read_data(scenario)
                 self.synthesize_population(scenario, state=state)
             
-	    self.remove_tables(scenario)
-	    self.populate_full_input_tables(scenario)
+            self.remove_tables(scenario)
+            self.populate_full_input_tables(scenario)
             self.export_results(scenario)
 	    
 if __name__ == '__main__':
