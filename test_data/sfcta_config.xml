@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectConfig>
+  <Skip run="False" />
+  <Project name="test_data" location="Q:\Model Programs\PopGen_1_1_2013\popgen\test_data" />
+  <DBConfig dbprotocol="mysql" dbhost="localhost" dbname="test_data" dbusername="root" dbpassword="sfcta" />
+  <Inputs create="True">
+    <GeographicCorrespondence location="SFTAZtoCensus2000Geography.csv" />
+    <HouseholdSample location="sample_households_Census2000_5pct.csv" />
+    <GQSample location="sample_gqs_Census2000_5pct.csv" />
+    <PersonSample location="sample_persons_Census2000_5pct.csv" />
+    <HouseholdControl location="controls_2010.csv" />
+    <GQControl location="controls_2010.csv" />
+    <PersonControl location="controls_2010.csv" />
+  </Inputs>
+  <Scenario value="1" description="Test Scenario" prepare_data="True" run="True">
+    <ControlVariables>
+      <Household>
+        <Variable name="hsizecat" order="1" num_categories="7" control="True" />
+        <Variable name="hinccat2" order="2" num_categories="4" control="True" />
+        <Variable name="hwrkrcat" order="3" num_categories="4" control="True" />
+        <Variable name="hNOCcat" order="4" num_categories="3" control="True" />
+        <Variable name="hhagecat" order="5" num_categories="2" control="False" />
+      </Household>
+      <GroupQuarter>
+        <Variable name="gqagecat2" order="1" num_categories="2" control="True" />
+        <Variable name="gqwrkrcat" order="2" num_categories="2" control="True" />
+      </GroupQuarter>
+      <Person control="True">
+        <Variable name="pcount" order="1" num_categories="1" control="False" />
+        <Variable name="pagecat" order="2" num_categories="5" control="True" />
+      </Person>
+    </ControlVariables>
+    <CorrespondenceMap>
+      <Household>
+        <ControlVariableMap name="hsizecat" category="1" marginal_variable="SZ1_HHLDS" />
+        <ControlVariableMap name="hsizecat" category="2" marginal_variable="SZ2_HHLDS" />
+        <ControlVariableMap name="hsizecat" category="3" marginal_variable="SZ3_HHLDS" />
+        <ControlVariableMap name="hsizecat" category="4" marginal_variable="SZ4_HHLDS" />
+        <ControlVariableMap name="hinccat2" category="1" marginal_variable="HHINC030" />
+        <ControlVariableMap name="hinccat2" category="2" marginal_variable="HHINC3060" />
+        <ControlVariableMap name="hinccat2" category="3" marginal_variable="HHINC60100" />
+        <ControlVariableMap name="hinccat2" category="4" marginal_variable="HHINC100P" />
+        <ControlVariableMap name="hwrkrcat" category="1" marginal_variable="WKR0_HHLDS" />
+        <ControlVariableMap name="hwrkrcat" category="2" marginal_variable="WKR1_HHLDS" />
+        <ControlVariableMap name="hwrkrcat" category="3" marginal_variable="WKR2_HHLDS" />
+        <ControlVariableMap name="hwrkrcat" category="4" marginal_variable="wKR3_HHLDS" />
+        <ControlVariableMap name="hNOCcat" category="1" marginal_variable="HAGE1KIDS0" />
+        <ControlVariableMap name="hNOCcat" category="2" marginal_variable="HAGE1KIDS1" />
+        <ControlVariableMap name="hNOCcat" category="3" marginal_variable="HAGE65KIDSWHATEV" />
+        <ControlVariableMap name="hsizecat" category="5" marginal_variable="SZ5_HHLDS" />
+        <ControlVariableMap name="hsizecat" category="6" marginal_variable="SZ6_HHLDS" />
+        <ControlVariableMap name="hsizecat" category="7" marginal_variable="SZ7_HHLDS" />
+      </Household>
+      <GroupQuarter>
+        <ControlVariableMap name="gqagecat2" category="1" marginal_variable="GQAGE064" />
+        <ControlVariableMap name="gqagecat2" category="2" marginal_variable="GQAGE65P" />
+        <ControlVariableMap name="gqwrkrcat" category="1" marginal_variable="GQNONWKRS" />
+        <ControlVariableMap name="gqwrkrcat" category="2" marginal_variable="GQWKRS" />
+      </GroupQuarter>
+      <Person>
+        <ControlVariableMap name="pcount" category="1" marginal_variable="POP" />
+        <ControlVariableMap name="pagecat" category="1" marginal_variable="AGE0004" />
+        <ControlVariableMap name="pagecat" category="2" marginal_variable="AGE0519" />
+        <ControlVariableMap name="pagecat" category="3" marginal_variable="AGE2044" />
+        <ControlVariableMap name="pagecat" category="4" marginal_variable="AGE4564" />
+        <ControlVariableMap name="pagecat" category="5" marginal_variable="AGE65P" />
+      </Person>
+    </CorrespondenceMap>
+    <Parameters>
+      <IPFTolerance value="0.0001" />
+      <IPFIterations value="500" />
+      <IPUTolerance value="0.0001" />
+      <IPUIterations value="500" />
+      <SyntheticDrawsTolerance value="0.9999" />
+      <SyntheticDrawsIterations value="500" />
+      <RoundingProcedure name="bucket" />
+    </Parameters>
+    <AdjustHouseholdMarginals modify="False">
+      <HouseholdSize name="hsizecat" />
+      <AverageHouseholdSizeLastCategory value="4.96" />
+      <ReferencePersonTotalVariable name="pcount" />
+    </AdjustHouseholdMarginals>
+    <ModifiedMarginals modify="False">
+      <GeoId state="24" county="510" taz="1">
+        <Variable name="wrkrs">
+          <Category value="1" old_marginal="30" new_marginal="10" />
+          <Category value="2" old_marginal="144" new_marginal="124" />
+          <Category value="3" old_marginal="30" new_marginal="10" />
+          <Category value="4" old_marginal="144" new_marginal="124" />
+        </Variable>
+      </GeoId>
+    </ModifiedMarginals>
+    <SynthesizeGeographies individual_geographies="True" entire_region="True">
+      <CountyId state="6" county="1" synthesize_county="True" />
+      <CountyId state="6" county="13" synthesize_county="True" />
+      <CountyId state="6" county="41" synthesize_county="True" />
+      <CountyId state="6" county="55" synthesize_county="True" />
+      <CountyId state="6" county="75" synthesize_county="True" />
+      <CountyId state="6" county="81" synthesize_county="True" />
+      <CountyId state="6" county="85" synthesize_county="True" />
+      <CountyId state="6" county="95" synthesize_county="True" />
+      <CountyId state="6" county="97" synthesize_county="True" />
+      <GeoId state="6" county="75" taz="1" />
+      <GeoId state="6" county="41" taz="2245" />
+    </SynthesizeGeographies>
+    <Outputs>
+      <MultiwayTable location="outputs\sizinc_popgen.dat" table_name="housing_synthetic">
+        <Variable name="hsizecat" />
+        <Variable name="hinccat2" />
+      </MultiwayTable>
+      <MultiwayTable location="outputs\wkrinc_popgen.dat" table_name="housing_synthetic">
+        <Variable name="hwrkrcat" />
+        <Variable name="hinccat2" />
+      </MultiwayTable>
+      <MultiwayTable location="outputs\hNOCcat_popgen.dat" table_name="housing_synthetic">
+        <Variable name="hNOCcat" />
+      </MultiwayTable>
+      <SummaryTable location="outputs\summary.dat" />
+      <SyntheticPopulationTables housing_location="outputs\housing_synthetic_data.dat" person_location="outputs\person_synthetic_data.dat" />
+    </Outputs>
+  </Scenario>
+</ProjectConfig>

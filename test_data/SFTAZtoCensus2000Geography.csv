@@ -1,0 +1,8 @@
+county,tract,bg,state,pumano,stateabb,countyname,TAZ
+bigint,bigint,bigint,bigint,bigint,text,text,bigint
+75,25403,87,6,2204,CA,San Francisco,87
+75,25403,88,6,2204,CA,San Francisco,88
+75,25401,90,6,2204,CA,San Francisco,90
+75,20900,129,6,2203,CA,San Francisco,129
+75,20900,130,6,2203,CA,San Francisco,130
+75,22901,133,6,2203,CA,San Francisco,133
