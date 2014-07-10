@@ -98,7 +98,7 @@ class SaveSyntheticPopFile():
 
 	check = 1
 
-        if check == 1:
+        if check == 2:
 	    try:
                 os.remove(filename)
 	    except Exception, e:
@@ -136,13 +136,13 @@ class SaveSyntheticPopFile():
 	        #gqSelVariables = self.getSelectedVariables(gqVariablesDict, self.project.gqVars, 
                 #                                         "Select Groupquarter Variables to Add to Synthetic Data")
 		
-		gqSelVariables = gqVariablesDict.keys()
+                gqSelVariables = gqVariablesDict.keys()
 
 
                 gqvarstr = ","
                 if gqSelVariables is not None:
                     for  i in gqSelVariables:
-                        gqvarstr = gqvarstr + '%s,' %i
+                        gqvarstr = gqvarstr + 'gs.%s as gq_%s,' % (i,i)
                     gqvarstr = gqvarstr[:-1]
                 else:
                     gqvarstr = ""
@@ -151,7 +151,7 @@ class SaveSyntheticPopFile():
                   
                 self.execute_query("""drop table temphou2""")
                 self.execute_query("""create table temphou2 select temphou1.* %s from temphou1"""
-                                   """ left join gq_sample using (state, serialno)""" %(gqvarstr))
+                                   """ left join gq_sample as gs using (state, serialno)""" %(gqvarstr))
             else:
                 self.execute_query("""alter table temphou1 rename to temphou2""")
 
