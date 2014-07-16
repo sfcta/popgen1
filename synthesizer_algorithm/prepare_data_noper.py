@@ -4,7 +4,7 @@
 # See PopGen/License
 
 import MySQLdb
-import numpy
+import numpy as np
 import adjusting_sample_joint_distribution
 import drawing_households
 import psuedo_sparse_matrix
@@ -112,6 +112,18 @@ def prepare_data_noper(db, project, state=None):
 # Populating the Master Matrix
     populated_matrix = psuedo_sparse_matrix_noper.populate_master_matrix(db, 99999, hhld_units, gq_units, hhld_dimensions,
                                                                                                gq_dimensions)
+
+    np_populated_matrix = populated_matrix.toarray()
+    output_dir =  project.location + '\\testing_output'
+    print output_dir
+    output_mm_file = output_dir + '\\master_matrix.csv'
+    output_mm_file = os.path.abspath(output_mm_file)
+    print output_mm_file
+    if os.path.exists(output_dir):
+        pass
+    else:
+        os.mkdir(output_dir)
+    numpy.savetxt(output_mm_file, np_populated_matrix, delimiter=',')
     print 'Populated in %.4fs' %(time.clock()-ti)
     ti = time.clock()
 

@@ -129,7 +129,19 @@ def prepare_data(db, project, state=None):
     populated_matrix = psuedo_sparse_matrix.populate_master_matrix(db, 99999, 
                                                                    hhld_units, gq_units, 
                                                                    hhld_dimensions, gq_dimensions, person_dimensions)
-    print 'Populated in %.4fs' %(time.clock()-ti)
+    
+    np_populated_matrix = populated_matrix.toarray()
+    output_dir =  project.location + '\\testing_output'
+    print output_dir
+    output_mm_file = output_dir + '\\master_matrix.csv'
+    output_mm_file = os.path.abspath(output_mm_file)
+    print output_mm_file
+    if os.path.exists(output_dir):
+        pass
+    else:
+        os.mkdir(output_dir)
+    numpy.savetxt(output_mm_file, np_populated_matrix, delimiter=',')
+	print 'Populated in %.4fs' %(time.clock()-ti)
     ti = time.clock()
 
 # Sparse representation of the Master Matrix for Household Types
