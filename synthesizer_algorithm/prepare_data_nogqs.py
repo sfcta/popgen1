@@ -103,7 +103,7 @@ def prepare_data_nogqs(db, project, state=None):
         pass
     else:
         os.mkdir(output_dir)
-    numpy.savetxt(output_mm_file, np_populated_matrix, delimiter=',')
+    np.savetxt(output_mm_file, np_populated_matrix, delimiter=',')
     print 'Populated in %.4fs' %(time.clock()-ti)
     ti = time.clock()
 
