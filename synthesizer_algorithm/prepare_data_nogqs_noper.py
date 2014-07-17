@@ -10,6 +10,7 @@ import drawing_households
 import psuedo_sparse_matrix
 import psuedo_sparse_matrix_nogqs_noper
 import time
+import os
 
 def prepare_data_nogqs_noper(db, project, state=None):
 

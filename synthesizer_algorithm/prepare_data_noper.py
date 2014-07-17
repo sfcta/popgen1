@@ -10,6 +10,7 @@ import drawing_households
 import psuedo_sparse_matrix
 import psuedo_sparse_matrix_noper
 import time
+import os
 
 def prepare_data_noper(db, project, state=None):
 

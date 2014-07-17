@@ -9,6 +9,7 @@ import adjusting_sample_joint_distribution
 import drawing_households
 import psuedo_sparse_matrix
 import time
+import os
 
 def prepare_data(db, project, state=None):
 
