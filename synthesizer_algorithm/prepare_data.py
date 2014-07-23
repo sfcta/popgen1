@@ -142,7 +142,7 @@ def prepare_data(db, project, state=None):
     else:
         os.mkdir(output_dir)
     numpy.savetxt(output_mm_file, np_populated_matrix, delimiter=',')
-	print 'Populated in %.4fs' %(time.clock()-ti)
+    print 'Populated in %.4fs' %(time.clock()-ti)
     ti = time.clock()
 
 # Sparse representation of the Master Matrix for Household Types
