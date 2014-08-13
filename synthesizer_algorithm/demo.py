@@ -153,6 +153,10 @@ def configure_and_run(project, geo, varCorrDict):
 	print 'Employing the entropy-based updating procedure for reallocating sample weights', project.parameters.ipuProcedure
     	iteration, weights, conv_crit_array, wts_array = heuristic_algorithm.ipu_entropy(db, 0, index_matrix, weightsDef, total_constraint, sp_matrix, parameters)
 
+    # write out results for debugging
+    numpy.savetxt(os.path.join(project.location, "testing_output","weights_%d.csv" % bg), weights, delimiter=',')
+    numpy.savetxt(os.path.join(project.location, "testing_output","wts_personadj_%d.csv" % bg), wts_array, delimiter=',')
+    numpy.savetxt(os.path.join(project.location, "testing_output","conv_crit_array_%d.csv" % bg), conv_crit_array, delimiter=',')
     """
     diff = weights - weights1
 
