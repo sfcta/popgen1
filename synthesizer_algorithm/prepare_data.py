@@ -141,7 +141,16 @@ def prepare_data(db, project, state=None):
         pass
     else:
         os.mkdir(output_dir)
-    numpy.savetxt(output_mm_file, np_populated_matrix, delimiter=',')
+        
+    # make the header
+    header = "state, pumano, hhid, serialno"
+    for hhldtypenum in range(1, numpy.asarray(hhld_dimensions).prod()+1):
+        header += ", hhldtype%d" % hhldtypenum
+    for gqtypenum in range(1, numpy.asarray(gq_dimensions).prod()+1):
+        header += ", gqtype%d" % gqtypenum
+    for persontypenum in range(1, numpy.asarray(person_dimensions).prod()+1):
+        header += ", persontype%d" % persontypenum 
+    numpy.savetxt(output_mm_file, np_populated_matrix, delimiter=',', header=header)
     print 'Populated in %.4fs' %(time.clock()-ti)
     ti = time.clock()
 
